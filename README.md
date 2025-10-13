@@ -1,13 +1,13 @@
 # README for Username Validation Script
 
 ## Author Information
-- **Name:** [Your Full Name]
-- **Course:** [Course Number and Name]
+- **Name:** Oliver Shepherd
+- **Course:** CPSC298
 - **Assignment:** Username Validation
-- **Date:** [Date of Completion]
+- **Date:** 10/13/25
 
 ## Program Description
-[Write 2-3 sentences in your own words describing what this script does and its purpose. Explain the problem it solves and how it works at a high level.]
+This script validates usernames against a set of  rules to make sure they meet the requirements. It reads usernames from standard input (either from a file or interactive input) and checks each one against a regular expression pattern.
 
 ## Username Requirements
 This script validates usernames according to the following rules:
@@ -27,33 +27,44 @@ To test with the provided input file:
 ```
 
 ## How the Script Works
-[Explain in 3-5 sentences how your script validates usernames. Include information about:]
-- The use of the `while` loop
-- The `grep` command with extended regular expressions
-- The meaning of the `-E` and `-v` flags
-- The redirect `> /dev/null 2>&1`
+The script uses a `while` loop with `read -r` to process each username from standard input line by line. Before validation, it removes any carriage return characters to handle Windows-style line endings. The username is then piped to `grep` with the `-E` flag (enabling extended regular expressions) and the `-q` flag (quiet mode, suppressing output). The `grep` command checks if the username matches the pattern `^[a-z][a-z0-9_]{2,11}$`, and based on the exit status, the script displays whether the username is valid or invalid. The loop continues until all usernames have been processed.
 
 ## Regular Expression Pattern
 The validation uses the following regular expression pattern:
 ```
 ^[a-z][a-z0-9_]{2,11}$
 ```
-This pattern ensures that:
+This pattern makes sure that:
 - The username starts with a lowercase letter `[a-z]`
 - The following characters are lowercase letters, digits, or underscores `[a-z0-9_]`
 - The total length is between 3 and 12 characters
 
 ## Testing Results
-[Describe your testing process and results. Include:]
-- Example valid usernames you tested (at least two)
-- Example invalid usernames and why they fail (at least two)
-- How you used the username-input file to test
+The script was tested using the `username-input` file containing 24 test usernames. The valid usernames the script found are:
+- `jsmith`
+- `jsmith_2023`
+- `dev_user`
+- `test123`
+- `admin`
+- `user`
+- `john_doe`
 
-## Challenges and Solutions
-[Optional: Describe any challenges you encountered while creating this script and how you solved them. This could include debugging issues, understanding regular expressions, or Git workflow problems.]
+Invalid usernames:
+- `js`
+- `j`
+- `jsmith12345678`
+- `jSmith`
+- `jsmith!`
+- `test-user`
+- `TEST123`
+- `_`
+- `__test`
+- `123abc`
+
+The `username-input` file was used by providing it to the script using `./username.sh < username-input`.
 
 ## Resources
-[List any resources you used (class slides, ChatGPT, etc.). Please refer to the course syllabus for more details on citations.]
+- Class materials
 
 ## License
 This project is part of coursework for Chapman University and is intended for educational purposes.
