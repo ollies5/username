@@ -27,7 +27,7 @@ To test with the provided input file:
 ```
 
 ## How the Script Works
-The script uses a `while` loop with `read -r` to process each username from standard input line by line. Before validation, it removes any carriage return characters to handle Windows-style line endings. The username is then piped to `grep` with the `-E` flag (enabling extended regular expressions) and the `-q` flag (quiet mode, suppressing output). The `grep` command checks if the username matches the pattern `^[a-z][a-z0-9_]{2,11}$`, and based on the exit status, the script displays whether the username is valid or invalid. The loop continues until all usernames have been processed.
+The script automatically detects whether it's running in interactive mode or file input mode by checking if standard input is a terminal using `[ -t 0 ]`. In interactive mode, it uses a `while true` loop with `read -p` to continuously prompt the user for usernames until a valid one is entered, at which point it exits with `exit 0`. In file input mode, it uses `while IFS= read -r` to process each username line by line from standard input. Before validation in file mode, the script removes any return characters to handle Windows line endings. Each username is then run through `grep`. The `grep` command checks if the username matches the pattern `^[a-z][a-z0-9_]{2,11}$`, and based on the exit status, the script displays whether the username is valid or invalid. In file mode, the loop continues until all usernames have been checked.
 
 ## Regular Expression Pattern
 The validation uses the following regular expression pattern:
