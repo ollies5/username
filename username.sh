@@ -1,18 +1,31 @@
 #!/bin/bash
-# zip.sh — validate each line of a file containing ZIP codes
 
-INPUT_FILE=${1:-zip-input}
+echo "Username Rules:"
+echo "  - Must start with a lowercase letter"
+echo "  - Can only contain lowercase letters, digits, and underscores"
+echo "  - Must be between 3 and 12 characters long"
+echo ""
 
-# Check if the file exists
-if [[ ! -f "$INPUT_FILE" ]]; then
-  echo "Error: file '$INPUT_FILE' not found."
-  exit 1
+if [ -t 0 ]; then
+  while true; do
+    read -p "Please enter a username: " USERNAME
+    
+    if echo "$USERNAME" | grep -Eq "^[a-z][a-z0-9_]{2,11}$"; then
+      echo "Thank you! '$USERNAME' is a valid username."
+      exit 0
+    else
+      echo "Invalid username. Please try again."
+      echo ""
+    fi
+  done
+else
+  while IFS= read -r USERNAME; do
+    USERNAME="${USERNAME%$'\r'}"
+    if echo "$USERNAME" | grep -Eq "^[a-z][a-z0-9_]{2,11}$"; then
+      echo "Thank you! '$USERNAME' is a valid username."
+    else
+      echo "Invalid username. Please try again."
+    fi
+    echo ""
+  done
 fi
-
-while read -r ZIP; do
-  if echo "$ZIP" | grep -Eq "^[0-9]{5}$"; then
-    echo "$ZIP → Valid ZIP code"
-  else
-    echo "$ZIP → Invalid ZIP code"
-  fi
-done < "$INPUT_FILE"
