@@ -8,7 +8,7 @@ echo ""
 
 if [ -t 0 ]; then
   while true; do
-    read -p "Please enter a username: " USERNAME
+    read -p -r "Please enter a username: " USERNAME
     
     if echo "$USERNAME" | grep -Eq "^[a-z][a-z0-9_]{2,11}$"; then
       echo "Thank you! '$USERNAME' is a valid username."
